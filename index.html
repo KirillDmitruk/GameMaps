@@ -6,31 +6,40 @@
     <meta charset="UTF-8">
 
     <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
     >
 
     <title>Game Maps</title>
 
+
     <!-- MapLibre CSS -->
+
     <link
-        href="https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.css"
-        rel="stylesheet"
+            href="https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.css"
+            rel="stylesheet"
     >
+
 
     <style>
 
         html,
         body {
+
             margin: 0;
             padding: 0;
+
             width: 100%;
             height: 100%;
+
         }
 
+
         #map {
+
             width: 100%;
             height: 100%;
+
         }
 
     </style>
@@ -40,18 +49,21 @@
 
 <body>
 
+
 <div id="map"></div>
 
 
 <!-- MapLibre JS -->
+
 <script src="https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.js"></script>
 
 
 <script>
 
-    // =====================================================
-    // MAP
-    // =====================================================
+
+    // =========================================================
+    // СОЗДАНИЕ КАРТЫ
+    // =========================================================
 
     const map = new maplibregl.Map({
 
@@ -61,71 +73,257 @@
 
         center: [30.7133, 36.8969],
 
-        zoom: 12
+        zoom: 16
 
     });
 
 
-    // =====================================================
-    // CONTROLS
-    // =====================================================
+    // =========================================================
+    // DEBUG POI
+    // =========================================================
+
+    map.on('click', (e) => {
+
+        const features = map.queryRenderedFeatures(e.point);
+
+        console.log('========== CLICK ==========');
+
+        if (features.length === 0) {
+
+            console.log('POI not found');
+
+            return;
+
+        }
+
+
+        features.forEach((feature, index) => {
+
+            console.log(`--- FEATURE ${index} ---`);
+
+            console.log(
+                'Layer:',
+                feature.layer?.id
+            );
+
+            console.log(
+                'Name:',
+                feature.properties?.name
+            );
+
+            console.log(
+                'Class:',
+                feature.properties?.class
+            );
+
+            console.log(
+                'Subclass:',
+                feature.properties?.subclass
+            );
+
+            console.log(
+                'Rank:',
+                feature.properties?.rank
+            );
+
+            console.log(
+                'ALL:',
+                feature.properties
+            );
+
+        });
+
+    });
+
+
+    // =========================================================
+    // КНОПКИ ZOOM / ROTATION
+    // =========================================================
 
     map.addControl(
+
         new maplibregl.NavigationControl(),
+
         'top-right'
+
     );
 
 
-    // =====================================================
-    // MAP LOADED
-    // =====================================================
+    // =========================================================
+    // КАРТА ЗАГРУЖЕНА
+    // =========================================================
 
     map.on('load', async () => {
+
 
         console.log('Map loaded');
 
 
         try {
 
+
             // =================================================
-            // LOAD FOOD ICON
+            // BURGER
             // =================================================
 
-            const image = await map.loadImage(
-                './assets/icons/food.png?v=' + Date.now()
+            const burgerImage = await map.loadImage(
+
+                './assets/icons/burger.png?v='
+                + Date.now()
+
             );
 
 
-            console.log('Food icon loaded');
+            if (map.hasImage('burger')) {
 
-
-            // =================================================
-            // ADD IMAGE TO MAP
-            // =================================================
-
-            if (map.hasImage('food')) {
-
-                map.removeImage('food');
+                map.removeImage('burger');
 
             }
 
 
             map.addImage(
-                'food',
-                image.data
+
+                'burger',
+
+                burgerImage.data
+
             );
 
 
-            console.log('Food icon registered');
+            console.log('Burger icon loaded');
 
 
             // =================================================
-            // ADD FOOD LAYER
+            // PIZZA
+            // =================================================
+
+            const pizzaImage = await map.loadImage(
+
+                './assets/icons/pizza.png?v='
+                + Date.now()
+
+            );
+
+
+            if (map.hasImage('pizza')) {
+
+                map.removeImage('pizza');
+
+            }
+
+
+            map.addImage(
+
+                'pizza',
+
+                pizzaImage.data
+
+            );
+
+
+            console.log('Pizza icon loaded');
+
+
+            // =================================================
+            // CHICKEN
+            // =================================================
+
+            const chickenImage = await map.loadImage(
+
+                './assets/icons/chikken_food.png?v='
+                + Date.now()
+
+            );
+
+
+            if (map.hasImage('chicken')) {
+
+                map.removeImage('chicken');
+
+            }
+
+
+            map.addImage(
+
+                'chicken',
+
+                chickenImage.data
+
+            );
+
+
+            console.log('Chicken icon loaded');
+
+
+            // =================================================
+            // RESTAURANT
+            // =================================================
+
+            const restaurantImage = await map.loadImage(
+
+                './assets/icons/restaurant.png?v='
+                + Date.now()
+
+            );
+
+
+            if (map.hasImage('restaurant')) {
+
+                map.removeImage('restaurant');
+
+            }
+
+
+            map.addImage(
+
+                'restaurant',
+
+                restaurantImage.data
+
+            );
+
+
+            console.log('Restaurant icon loaded');
+
+
+            // =================================================
+            // CAFE
+            // =================================================
+
+            const cafeImage = await map.loadImage(
+
+                './assets/icons/caffe.png?v='
+                + Date.now()
+
+            );
+
+
+            if (map.hasImage('cafe')) {
+
+                map.removeImage('cafe');
+
+            }
+
+
+            map.addImage(
+
+                'cafe',
+
+                cafeImage.data
+
+            );
+
+
+            console.log('Cafe icon loaded');
+
+
+            // =================================================
+            // RESTAURANTS
             // =================================================
 
             map.addLayer({
 
-                id: 'game-food',
+                id: 'game-restaurant',
 
                 type: 'symbol',
 
@@ -135,36 +333,21 @@
 
                 minzoom: 15,
 
+
                 filter: [
 
-                    'any',
+                    '==',
 
-                    // restaurant
-                    [
-                        '==',
-                        ['get', 'class'],
-                        'restaurant'
-                    ],
+                    ['get', 'class'],
 
-                    // fast food
-                    [
-                        '==',
-                        ['get', 'class'],
-                        'fast_food'
-                    ],
-
-                    // fast food через subclass
-                    [
-                        '==',
-                        ['get', 'subclass'],
-                        'fast_food'
-                    ]
+                    'restaurant'
 
                 ],
 
+
                 layout: {
 
-                    'icon-image': 'food',
+                    'icon-image': 'restaurant',
 
                     'icon-size': 1,
 
@@ -177,19 +360,557 @@
             });
 
 
-            console.log('Food layer added');
+            console.log('Restaurant layer added');
+
+
+            // =================================================
+            // CAFES
+            // =================================================
+
+            map.addLayer({
+
+                id: 'game-cafe',
+
+                type: 'symbol',
+
+                source: 'openmaptiles',
+
+                'source-layer': 'poi',
+
+                minzoom: 15,
+
+
+                filter: [
+
+                    'any',
+
+                    // cafe через class
+
+                    [
+
+                        '==',
+
+                        ['get', 'class'],
+
+                        'cafe'
+
+                    ],
+
+
+                    // cafe через subclass
+
+                    [
+
+                        '==',
+
+                        ['get', 'subclass'],
+
+                        'cafe'
+
+                    ]
+
+                ],
+
+
+                layout: {
+
+                    'icon-image': 'cafe',
+
+                    'icon-size': 1,
+
+                    'icon-allow-overlap': true,
+
+                    'icon-ignore-placement': true
+
+                }
+
+            });
+
+
+            console.log('Cafe layer added');
+
+
+            // =================================================
+            // ОБЩИЙ FILTER FOOD
+            // =================================================
+
+            const foodFilter = [
+
+                'all',
+
+
+                [
+
+                    'any',
+
+
+                    // ==========================================
+                    // FAST FOOD
+                    // ==========================================
+
+                    [
+
+                        '==',
+
+                        ['get', 'class'],
+
+                        'fast_food'
+
+                    ],
+
+
+                    [
+
+                        '==',
+
+                        ['get', 'subclass'],
+
+                        'fast_food'
+
+                    ],
+
+
+                    // ==========================================
+                    // SUPERMARKET
+                    // ==========================================
+
+                    [
+
+                        '==',
+
+                        ['get', 'class'],
+
+                        'supermarket'
+
+                    ],
+
+
+                    [
+
+                        '==',
+
+                        ['get', 'subclass'],
+
+                        'supermarket'
+
+                    ],
+
+
+                    // ==========================================
+                    // CONVENIENCE
+                    // Например: Migros Jet
+                    // ==========================================
+
+                    [
+
+                        '==',
+
+                        ['get', 'subclass'],
+
+                        'convenience'
+
+                    ],
+
+
+                    // ==========================================
+                    // GROCERY
+                    // ==========================================
+
+                    [
+
+                        '==',
+
+                        ['get', 'subclass'],
+
+                        'grocery'
+
+                    ],
+
+
+                    // ==========================================
+                    // BAKERY
+                    // ==========================================
+
+                    [
+
+                        '==',
+
+                        ['get', 'subclass'],
+
+                        'bakery'
+
+                    ],
+
+
+                    // ==========================================
+                    // BUTCHER
+                    // ==========================================
+
+                    [
+
+                        '==',
+
+                        ['get', 'subclass'],
+
+                        'butcher'
+
+                    ],
+
+
+                    // ==========================================
+                    // DELI
+                    // ==========================================
+
+                    [
+
+                        '==',
+
+                        ['get', 'subclass'],
+
+                        'deli'
+
+                    ]
+
+                ],
+
+
+                // ==========================================
+                // НЕ РЕСТОРАН
+                // ==========================================
+
+                [
+
+                    '!=',
+
+                    ['get', 'class'],
+
+                    'restaurant'
+
+                ],
+
+
+                [
+
+                    '!=',
+
+                    ['get', 'subclass'],
+
+                    'restaurant'
+
+                ],
+
+
+                // ==========================================
+                // НЕ КАФЕ
+                // ==========================================
+
+                [
+
+                    '!=',
+
+                    ['get', 'class'],
+
+                    'cafe'
+
+                ],
+
+
+                [
+
+                    '!=',
+
+                    ['get', 'subclass'],
+
+                    'cafe'
+
+                ]
+
+            ];
+
+
+            // =================================================
+            // BURGER
+            // =================================================
+            //
+            // rank % 3 = 0
+            //
+            // =================================================
+
+            map.addLayer({
+
+                id: 'game-food-burger',
+
+                type: 'symbol',
+
+                source: 'openmaptiles',
+
+                'source-layer': 'poi',
+
+                minzoom: 15,
+
+
+                filter: [
+
+                    'all',
+
+                    foodFilter,
+
+
+                    [
+
+                        '==',
+
+
+                        [
+
+                            '%',
+
+
+                            [
+
+                                'to-number',
+
+
+                                [
+
+                                    'coalesce',
+
+                                    ['get', 'rank'],
+
+                                    0
+
+                                ]
+
+                            ],
+
+
+                            3
+
+                        ],
+
+
+                        0
+
+                    ]
+
+                ],
+
+
+                layout: {
+
+                    'icon-image': 'burger',
+
+                    'icon-size': 1,
+
+                    'icon-allow-overlap': true,
+
+                    'icon-ignore-placement': true
+
+                }
+
+            });
+
+
+            console.log('Burger food layer added');
+
+
+            // =================================================
+            // PIZZA
+            // =================================================
+            //
+            // rank % 3 = 1
+            //
+            // =================================================
+
+            map.addLayer({
+
+                id: 'game-food-pizza',
+
+                type: 'symbol',
+
+                source: 'openmaptiles',
+
+                'source-layer': 'poi',
+
+                minzoom: 15,
+
+
+                filter: [
+
+                    'all',
+
+                    foodFilter,
+
+
+                    [
+
+                        '==',
+
+
+                        [
+
+                            '%',
+
+
+                            [
+
+                                'to-number',
+
+
+                                [
+
+                                    'coalesce',
+
+                                    ['get', 'rank'],
+
+                                    0
+
+                                ]
+
+                            ],
+
+
+                            3
+
+                        ],
+
+
+                        1
+
+                    ]
+
+                ],
+
+
+                layout: {
+
+                    'icon-image': 'pizza',
+
+                    'icon-size': 1,
+
+                    'icon-allow-overlap': true,
+
+                    'icon-ignore-placement': true
+
+                }
+
+            });
+
+
+            console.log('Pizza food layer added');
+
+
+            // =================================================
+            // CHICKEN
+            // =================================================
+            //
+            // rank % 3 = 2
+            //
+            // =================================================
+
+            map.addLayer({
+
+                id: 'game-food-chicken',
+
+                type: 'symbol',
+
+                source: 'openmaptiles',
+
+                'source-layer': 'poi',
+
+                minzoom: 15,
+
+
+                filter: [
+
+                    'all',
+
+                    foodFilter,
+
+
+                    [
+
+                        '==',
+
+
+                        [
+
+                            '%',
+
+
+                            [
+
+                                'to-number',
+
+
+                                [
+
+                                    'coalesce',
+
+                                    ['get', 'rank'],
+
+                                    0
+
+                                ]
+
+                            ],
+
+
+                            3
+
+                        ],
+
+
+                        2
+
+                    ]
+
+                ],
+
+
+                layout: {
+
+                    'icon-image': 'chicken',
+
+                    'icon-size': 1,
+
+                    'icon-allow-overlap': true,
+
+                    'icon-ignore-placement': true
+
+                }
+
+            });
+
+
+            console.log('Chicken food layer added');
+
+
+            // =================================================
+            // ГОТОВО
+            // =================================================
+
+            console.log(
+                'All Game Maps icon layers added'
+            );
 
 
         } catch (error) {
 
+
             console.error(
-                'FOOD ICON ERROR:',
+
+                'GAME MAPS ICON ERROR:',
+
                 error
+
             );
 
         }
 
+
     });
+
 
 </script>
 
