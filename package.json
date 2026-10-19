@@ -1,0 +1,30 @@
+{
+  "name": "gamemaps",
+  "version": "0.1.0",
+  "description": "��#\u0000 \u0000G\u0000a\u0000m\u0000e\u0000M\u0000a\u0000p\u0000s\u0000\r\u0000 \u0000",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KirillDmitruk/GameMaps.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KirillDmitruk/GameMaps/issues"
+  },
+  "homepage": "https://github.com/KirillDmitruk/GameMaps#readme",
+  "devDependencies": {
+    "@maplibre/maplibre-gl-style-spec": "^26.4.4",
+    "vitest": "^3.0.0"
+  },
+  "private": true,
+  "type": "module"
+}
