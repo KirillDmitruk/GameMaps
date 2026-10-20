@@ -1,13 +1,8 @@
-
 import { POI_CONFIG } from "../config.js";
+import { smartFilters } from "./poiSmartFilters.js";
+import { POI_ICON_MAP } from "../icons/iconConfig.js";
 
-import {
-    restaurantFilter,
-    cafeFilter,
-    foodVariantFilter
-} from "./poiFilters.js";
-
-function addPoiLayer(map, id, icon, filter) {
+export function addPoiLayer(map, id, icon, filter) {
     map.addLayer({
         id,
         type: "symbol",
@@ -27,30 +22,24 @@ function addPoiLayer(map, id, icon, filter) {
 }
 
 export function addPoiLayers(map) {
-    addPoiLayer(
-        map,
-        "game-restaurant",
-        "restaurant",
-        restaurantFilter
-    );
+    for (const [category, filter] of Object.entries(smartFilters)) {
+        const icon = POI_ICON_MAP[category];
 
-    addPoiLayer(
-        map,
-        "game-cafe",
-        "cafe",
-        cafeFilter
-    );
+        if (!icon) {
+            console.warn(`No icon configured for category: ${category}`);
+            continue;
+        }
 
-    const foodIcons = ["burger", "pizza", "chicken"];
+        const layerId = `game-${category}`;
 
-    foodIcons.forEach((icon, index) => {
-        addPoiLayer(
-            map,
-            `game-food-${icon}`,
-            icon,
-            foodVariantFilter(index)
-        );
-    });
+        if (map.getLayer(layerId)) {
+            continue;
+        }
 
-    console.log("All POI layers added");
+        addPoiLayer(map, layerId, icon, filter);
+
+        console.log(`POI layer added: ${layerId}`);
+    }
+
+    console.log("All smart POI layers added");
 }
