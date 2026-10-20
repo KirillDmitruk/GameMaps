@@ -3,7 +3,13 @@ export const ICONS = {
     pizza: "./assets/icons/pizza.png",
     chicken: "./assets/icons/chikken_food.png",
     restaurant: "./assets/icons/restaurant.png",
-    cafe: "./assets/icons/caffe.png"
+    cafe: "./assets/icons/caffe.png",
+
+    grocery: "./assets/icons/grocery.png",
+    hospital: "./assets/icons/hospital.png",
+    fuel: "./assets/icons/fuel.png",
+    police: "./assets/icons/police.png",
+    gym: "./assets/icons/gym.png"
 };
 
 export const POI_ICON_MAP = {
@@ -12,11 +18,9 @@ export const POI_ICON_MAP = {
     pizza: "pizza",
     burger: "burger",
     fastFood: "chicken",
-    grocery: "restaurant",
-
-    // Временные иконки до добавления PNG
-    hospital: "restaurant",
-    fuel: "restaurant",
-    police: "restaurant",
-    gym: "restaurant"
+    grocery: "grocery",
+    hospital: "hospital",
+    fuel: "fuel",
+    police: "police",
+    gym: "gym"
 };
